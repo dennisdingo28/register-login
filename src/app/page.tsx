@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import rocket from "../assets/rocket.png"
+import RegisterForm from '@/components/Form/RegisterForm'
 
 export default function Home() {
   return (
@@ -17,9 +18,10 @@ export default function Home() {
             <small className='underline text-gray-400 cursor-pointer'>© Copyright 2023.All rights reserved</small>
           </div>
           <div className='py-1 px-2'>
-
+            <RegisterForm/>
           </div>
         </form>
+
       </div>
   )
 }
