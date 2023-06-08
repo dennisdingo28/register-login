@@ -38,13 +38,15 @@ const Form: FC<FormProps> = ({title,subtitle,inputs,buttonTitle,buttonClickHandl
       const currentInput = formState[formStateKeys[i]].value;
 
       if(currentInput.trim()===''){
+        setFormState(prev=>({...prev,[formStateKeys[i]]:{value:currentInput,error:true}}))
         return false;
       }else if(formStateKeys[i]==="email"){
         if(!isEmail(currentInput))
+          setFormState(prev=>({...prev,[formStateKeys[i]]:{value:currentInput,error:true}}))
           return false;
       }
     }
-      
+
       return true;
   }
   
@@ -64,6 +66,7 @@ const Form: FC<FormProps> = ({title,subtitle,inputs,buttonTitle,buttonClickHandl
       </div>
       <div className='flex flex-col gap-3 mt-3'>
         {inputs.map((input,index)=>{
+          console.log(formState[input.name]);
           
           return (
             <div key={index} className='flex'>
@@ -71,7 +74,7 @@ const Form: FC<FormProps> = ({title,subtitle,inputs,buttonTitle,buttonClickHandl
                 <i className={input.icon}></i>
               </div>
               <div className='flex-1'>
-                <input type={input.type || "text"} value={formState[input.name]?.value || ""}  onChange={(e)=>setFormState(prev=> ({...prev,[input.name]:{value:e.target.value,error:false}}))} className={`w-full outline-none py-[2px] px-1 h-full focus:shadow-[0.4px_0px_4px_0px_#5b15b0] duration-100 bg-transparent border-y-2 border-r-2 border-gray-300 rounded-r-md`} placeholder={input.placeholder}/>
+                <input type={input.type || "text"} value={formState[input.name]?.value || ""}  onChange={(e)=>setFormState(prev=> ({...prev,[input.name]:{value:e.target.value,error:false}}))} className={`w-full outline-none py-[2px] px-1 h-full focus:shadow-[0.4px_0px_4px_0px_#5b15b0] ${formState[input.name]?.error ? "outline":""} duration-100 bg-transparent border-y-2 border-r-2 border-gray-300 rounded-r-md`} placeholder={input.placeholder}/>
               </div>
             </div>
           )
