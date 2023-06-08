@@ -63,9 +63,14 @@ const Form: FC<FormProps> = ({title,subtitle,inputs,buttonTitle,buttonClickHandl
 
       if(formStateKeys.length!==inputs.length)
       {
-        for(let i:number=0;i<inputs.length;i++){
-          if(formStateKeys[i]!==inputs[i].name)
-            setFormState(prev=>({...prev,[inputs[i].name]:{value:"",error:true}}));
+        for(let i:number = 0;i<inputs.length;i++){
+          let found:boolean = false;
+          for(let j:number = 0;j<formStateKeys.length && !found;j++){
+            if(inputs[i].name===formStateKeys[j])
+              found=true;
+          }
+          if(!found)
+            setFormState(prev=>({...prev,[inputs[i].name]:{value:"",error:true}}))
         }
         return false;
       }

@@ -14,7 +14,7 @@ const RegisterForm: FC<RegisterFormProps> = ({}) => {
     }
 
     function handleCreateAccount(){
-      console.log('test');
+      console.log('test register');
     
     }
     

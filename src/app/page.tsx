@@ -1,8 +1,13 @@
+"use client"
+
 import Image from 'next/image'
 import rocket from "../assets/rocket.png"
 import RegisterForm from '@/components/Form/RegisterForm'
+import LoginForm from '@/components/Form/LoginForm'
+import { useState } from 'react'
 
 export default function Home() {
+  const [registerSide,setRegisterSide] = useState<boolean>(true);
   return (
       <div className='min-h-[100vh] flex items-center justify-center p-2'>
         <form className='form lg:flex'>
@@ -15,12 +20,15 @@ export default function Home() {
               <p className='font-medium text-gray-400 text-[1.1em] text-center'>Authenticate and unleash the full features of our app</p>
             </div>
             <div className="flex items-center justify-center mt-3 mb-3">
-              <button className='bg-[#edbc3f] p-2 rounded-full cursor-pointer font-medium duration-75 hover:bg-[#dcb246] active:scale-95'>I already have an account</button>
+              <button onClick={(e)=>{
+                e.preventDefault();
+                setRegisterSide(!registerSide);
+                }} className='bg-[#edbc3f] p-2 rounded-full cursor-pointer font-medium duration-75 hover:bg-[#dcb246] active:scale-95'>I already have an account</button>
             </div>
             <small className='underline text-gray-400 cursor-pointer'>© Copyright 2023.All rights reserved</small>
           </div>
           <div className=''>
-            <RegisterForm/>
+            {registerSide ? <RegisterForm/> : <LoginForm/>}
           </div>
         </form>
 
