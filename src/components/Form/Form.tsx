@@ -1,10 +1,13 @@
 "use client"
+
 import { Input} from '@/types/form'
 import { Dispatch, FC, SetStateAction, useState } from 'react'
 import { MouseEvent } from 'react'
 import Image from 'next/image'
 import GoogleLogo from "../../assets/google.png"
 import {signIn} from "next-auth/react"
+import defaultUser from "../../assets/defaultProfile.png";
+import { useSession } from 'next-auth/react'
 
 interface FormProps {
     title: string,
@@ -21,6 +24,9 @@ interface FormState {
 }
 
 const Form: FC<FormProps> = ({title,subtitle,inputs,buttonTitle,buttonClickHandler}) => {
+  const {data:session} = useSession();
+  console.log(session);
+  
 
   const [formState,setFormState] = useState<FormState>({});
   const [submitted,setSubmitted] = useState<boolean>(false);
@@ -117,15 +123,35 @@ const Form: FC<FormProps> = ({title,subtitle,inputs,buttonTitle,buttonClickHandl
         <button onClick={handleButtonClick} className='bg-[#68a5e4] duration-75 border border-[#68a5e4] text-white py-2 hover:bg-transparent hover:text-[#68a5e4] active:bg-[#68a5e4] active:text-white'>{buttonTitle}</button>
       </div>  
       <p className='text-center my-2'>or</p>
-      <div className='signInProviders'>
-          <button onClick={(e:MouseEvent<HTMLButtonElement>)=>{
-            e.preventDefault();
-            signIn("google");
-            }} className='bg-white flex items-center justify-center gap-3 w-full max-w-[250px] py-1 mx-auto rounded-sm'>
-            <Image src={GoogleLogo} width={20} height={20} alt='google logo'/>
-            Sign in with Google
-          </button>
+      <div className='formFooter'>
+        <div className='signInProviders'>
+            <button onClick={(e:MouseEvent<HTMLButtonElement>)=>{
+              e.preventDefault();
+              signIn("google");
+              }} className='bg-white flex items-center justify-center gap-3 w-full max-w-[250px] py-1 mx-auto rounded-sm'>
+              <Image src={GoogleLogo} width={20} height={20} alt='google logo'/>
+              Sign in with Google
+            </button>
+        </div>
+        <div className='userProfileContainer'>
+          {session && (
+            <div>
+              <div className='flex flex-col items-center'>
+                
+                <div className='flex items-center justify-center gap-1 mt-4'>
+                  <Image src={`${session.user?.image}`} width={22} height={22} className='rounded-full object-cover' alt='user profile'/>
+                  <p className='font-medium'>{session.user?.name}</p>
+                </div>
+                <button className='bg-[#edbc3f] py-2 w-full mt-2 hover:bg-[#d4a429]' onClick={(e:MouseEvent<HTMLButtonElement>)=>{
+                  e.preventDefault();
+                }}>Go To Dashboard</button>
+              </div>
+            </div>
+            
+            )}
+        </div>
       </div>
+     
     </div>
   )
 }

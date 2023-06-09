@@ -47,17 +47,12 @@ export const authOptions: NextAuthOptions = {
         },
         async session({session,token}){
             
-            if(session && session.user){
-                const sessionUser = await GoogleUser.findOne({username:session.user.name,email:session.user.email});
-                // const newSessionUser = {username:sessionUser.name,email:sessionUser.email,image:sessionUser.image,token:token.token};
-                console.log(sessionUser);
-                if(sessionUser){
-                    sessionUser._doc.token=token.token;
-
-                    return sessionUser;
-                }
+            const sessionUser = await GoogleUser.findOne({email:session?.user?.email,username:session?.user?.name});
+            if(session && session?.user){
                 
+                session.user._id=sessionUser._id.toString();
             }
+            
             return session;
         }
     }
