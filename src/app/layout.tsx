@@ -8,10 +8,10 @@ export const metadata = {
 }
 
 export default function RootLayout({
-  children,session
+  children
 }: {
   children: React.ReactNode,
-  session: Session
+  
 }) {
 
   return (
@@ -20,7 +20,7 @@ export default function RootLayout({
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"></link>
     </head>
       <body className='font-geologica'>
-        <Provider session={session}>
+        <Provider>
           {children}
         </Provider>
       </body>

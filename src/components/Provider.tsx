@@ -8,8 +8,8 @@ interface ProviderProps {
     session: Session
 }
 
-const Provider: FC<ProviderProps> = ({children,session}) => {
-  return <SessionProvider session={session}>
+const Provider: FC<ProviderProps> = ({children}) => {
+  return <SessionProvider>
     {children}
   </SessionProvider>
 }
