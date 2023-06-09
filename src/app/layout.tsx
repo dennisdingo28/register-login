@@ -1,3 +1,5 @@
+import Provider from '@/components/Provider'
+import type {Session} from "next-auth"
 import './globals.css'
 
 export const metadata = {
@@ -6,17 +8,21 @@ export const metadata = {
 }
 
 export default function RootLayout({
-  children,
+  children,session
 }: {
-  children: React.ReactNode
+  children: React.ReactNode,
+  session: Session
 }) {
+
   return (
     <html lang="en">
       <head>
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"></link>
     </head>
       <body className='font-geologica'>
-        {children}
+        <Provider session={session}>
+          {children}
+        </Provider>
       </body>
     </html>
   )

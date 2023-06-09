@@ -4,6 +4,7 @@ import { Dispatch, FC, SetStateAction, useState } from 'react'
 import { MouseEvent } from 'react'
 import Image from 'next/image'
 import GoogleLogo from "../../assets/google.png"
+import {signIn} from "next-auth/react"
 
 interface FormProps {
     title: string,
@@ -81,10 +82,8 @@ const Form: FC<FormProps> = ({title,subtitle,inputs,buttonTitle,buttonClickHandl
   async function handleButtonClick(e:MouseEvent<HTMLButtonElement>){
     e.preventDefault();
     if(validateInputs()){
-      console.log('aici',formState);
       
       if(buttonTitle && buttonClickHandler){
-        console.log('ajunsai aiciea sa');
         
         setSubmitted(true);
         buttonClickHandler();
@@ -119,7 +118,10 @@ const Form: FC<FormProps> = ({title,subtitle,inputs,buttonTitle,buttonClickHandl
       </div>  
       <p className='text-center my-2'>or</p>
       <div className='signInProviders'>
-          <button className='bg-white flex items-center justify-center gap-3 w-full max-w-[250px] py-1 mx-auto rounded-sm'>
+          <button onClick={(e:MouseEvent<HTMLButtonElement>)=>{
+            e.preventDefault();
+            signIn("google");
+            }} className='bg-white flex items-center justify-center gap-3 w-full max-w-[250px] py-1 mx-auto rounded-sm'>
             <Image src={GoogleLogo} width={20} height={20} alt='google logo'/>
             Sign in with Google
           </button>
