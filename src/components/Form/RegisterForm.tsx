@@ -2,6 +2,8 @@
 import { FC, useState, MouseEvent } from 'react'
 import Form from './Form'
 import { Input} from '@/types/form'
+import axios from 'axios'
+import { FormState } from './types/form'
 
 
 interface RegisterFormProps {
@@ -13,9 +15,15 @@ const RegisterForm: FC<RegisterFormProps> = ({}) => {
       return {type:type || "text",placeholder:placeholder || "",icon:icon || "",name:name || ""}
     }
 
-    function handleCreateAccount(){
+    async function handleCreateAccount(formStates:FormState){
       console.log('test register');
-    
+      try{
+        const res = await axios.post('/api/user',formStates);
+        console.log(res);
+        
+      }catch(err){
+        console.log(err);
+      }
     }
     
     const inputs: Input[] = [];

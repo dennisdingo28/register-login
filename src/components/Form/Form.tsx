@@ -5,32 +5,27 @@ import { Dispatch, FC, SetStateAction, useState } from 'react'
 import { MouseEvent } from 'react'
 import Image from 'next/image'
 import GoogleLogo from "../../assets/google.png"
-import {signIn} from "next-auth/react"
+import {signIn, signOut} from "next-auth/react"
 import defaultUser from "../../assets/defaultProfile.png";
 import { useSession } from 'next-auth/react'
+import { FormState } from './types/form'
 
 interface FormProps {
     title: string,
     subtitle?: string,
     inputs: Input[],
     buttonTitle?: string,
-    buttonClickHandler?: ()=>void,
+    buttonClickHandler?:(formStates:FormState)=>void,
 }
-interface FormState {
-  [key:string]: {
-    value: string,
-    error:boolean
-  },
-}
+
 
 const Form: FC<FormProps> = ({title,subtitle,inputs,buttonTitle,buttonClickHandler}) => {
   const {data:session} = useSession();
-  console.log(session);
   
-
   const [formState,setFormState] = useState<FormState>({});
   const [submitted,setSubmitted] = useState<boolean>(false);
-
+  console.log(formState);
+  
   function isEmail(email:string) {
     return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
   }
@@ -92,7 +87,7 @@ const Form: FC<FormProps> = ({title,subtitle,inputs,buttonTitle,buttonClickHandl
       if(buttonTitle && buttonClickHandler){
         
         setSubmitted(true);
-        buttonClickHandler();
+        buttonClickHandler(formState);
       }
     }
     setTimeout(()=>{
@@ -141,6 +136,7 @@ const Form: FC<FormProps> = ({title,subtitle,inputs,buttonTitle,buttonClickHandl
                 <div className='flex items-center justify-center gap-1 mt-4'>
                   <Image src={`${session.user?.image}`} width={22} height={22} className='rounded-full object-cover' alt='user profile'/>
                   <p className='font-medium'>{session.user?.name}</p>
+                  <i onClick={()=>signOut()} className='bi bi-box-arrow-right w-[20px] h-[20px] cursor-pointer hover:text-red-700'></i>
                 </div>
                 <button className='bg-[#edbc3f] py-2 w-full mt-2 hover:bg-[#d4a429]' onClick={(e:MouseEvent<HTMLButtonElement>)=>{
                   e.preventDefault();

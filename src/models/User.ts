@@ -1,6 +1,6 @@
 import mongoose,{ Schema,model,models } from "mongoose";
 import defaultProfile from "../assets/defaultProfile.png";
-
+import bcrypt from 'bcrypt';
 
 const UserSchema = new Schema({
     username: {
@@ -18,7 +18,7 @@ const UserSchema = new Schema({
     },
     image:{
         type:String,
-        default:defaultProfile,
+        default:"../assets/defaultProfile.png",
     }
 });
 
@@ -40,6 +40,20 @@ const GoogleUserSchema = new Schema({
     }
 })
 
+
+UserSchema.pre('save',async function(){
+    try{
+        const salt = await bcrypt.genSalt(10);
+        if(this.password){
+            const hashedPassword = await bcrypt.hash(this.password,salt);
+            this.password=hashedPassword;
+        }else{
+            throw new Error("Password is empty");
+        }
+    }catch(err){
+        console.log(err);
+    }
+});
 
 const User = models.Users || model("Users",UserSchema);
 const GoogleUser = models.GoogleUsers || model("GoogleUsers",GoogleUserSchema);
