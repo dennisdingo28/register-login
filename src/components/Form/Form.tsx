@@ -21,6 +21,7 @@ interface FormProps {
 
 const Form: FC<FormProps> = ({title,subtitle,inputs,buttonTitle,buttonClickHandler}) => {
   const {data:session} = useSession();
+  console.log(session);
   
   const [formState,setFormState] = useState<FormState>({});
   const [submitted,setSubmitted] = useState<boolean>(false);
