@@ -1,8 +1,30 @@
-import mongoose,{ Schema,model,models } from "mongoose";
+import mongoose,{ Schema,Model,models,model,Document } from "mongoose";
 import defaultProfile from "../assets/defaultProfile.png";
 import bcrypt from 'bcrypt';
+import jwt from "jsonwebtoken"
 
-const UserSchema = new Schema({
+interface JWTUserPayload {
+    id:string,
+    username?:string,
+    email?:string,
+}
+
+
+interface UserProps {
+    username: string;
+    email: string;
+    password: string;
+    image: string;
+}
+
+
+interface UserDocument extends UserProps,Document {
+    generateJWT: (payload:JWTUserPayload) => string | null;
+}
+ 
+
+
+const UserSchema: Schema<UserDocument> = new Schema({
     username: {
         type:String,
         required:[true,'You must provide an username']
@@ -41,6 +63,14 @@ const GoogleUserSchema = new Schema({
 })
 
 
+
+UserSchema.methods.generateJWT = function(payload:JWTUserPayload): string | null{
+    if(!process.env.JWT_ENCRYPTION || process.env.JWT_ENCRYPTION?.trim()==="")
+        return null;
+    const token = jwt.sign(payload,process.env.JWT_ENCRYPTION);
+    return token;
+}
+
 UserSchema.pre('save',async function(){
     try{
         const salt = await bcrypt.genSalt(10);
@@ -55,7 +85,7 @@ UserSchema.pre('save',async function(){
     }
 });
 
-const User = models.Users || model("Users",UserSchema);
+const User = models.Users || model<UserDocument>("Users",UserSchema);
 const GoogleUser = models.GoogleUsers || model("GoogleUsers",GoogleUserSchema);
 
 export {User,GoogleUser};

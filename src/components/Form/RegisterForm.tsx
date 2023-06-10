@@ -16,7 +16,6 @@ const RegisterForm: FC<RegisterFormProps> = ({}) => {
     }
 
     async function handleCreateAccount(formStates:FormState){
-      console.log('test register');
       try{
         const res = await axios.post('/api/user',formStates);
         console.log(res);
