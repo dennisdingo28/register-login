@@ -3,9 +3,7 @@ import { FC, useState, MouseEvent } from 'react'
 import Form from './Form'
 import { Input} from '@/types/form'
 import axios from 'axios'
-import { FormState } from './types/form'
-
-
+import { FormState } from '@/types/form'
 
 const RegisterForm: FC = () => {
     function addInputs<Input>(type? : string,placeholder? : string,icon? : string,name?:string){

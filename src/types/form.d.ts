@@ -4,3 +4,9 @@ export type Input = {
     icon:string,
     name:string,
 }
+export interface FormState {
+    [key:string]: {
+      value: string,
+      error:boolean
+    },
+}

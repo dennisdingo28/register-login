@@ -8,7 +8,7 @@ import GoogleLogo from "../../assets/google.png"
 import {signIn, signOut} from "next-auth/react"
 import defaultUser from "../../assets/defaultProfile.png";
 import { useSession } from 'next-auth/react'
-import { FormState } from './types/form'
+import { FormState } from '@/types/form'
 import { Session } from 'next-auth'
 import { User } from 'next-auth'
 import useAuthenticatedUser from '@/hooks/useAuthenticatedUser'
@@ -26,7 +26,7 @@ interface FormProps {
 
 const Form: FC<FormProps> = ({title,subtitle,inputs,buttonTitle,buttonClickHandler}) => {
 
-  const [authenticatedUserLoading,setAuthenticatedUserLoading] = useState<boolean>(false);
+  const [authenticatedUserLoading,setAuthenticatedUserLoading] = useState<boolean | null>(false);
 
   const user = useAuthenticatedUser({authenticatedUserLoading,setAuthenticatedUserLoading});
   console.log(user);
