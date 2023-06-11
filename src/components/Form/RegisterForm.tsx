@@ -6,11 +6,8 @@ import axios from 'axios'
 import { FormState } from './types/form'
 
 
-interface RegisterFormProps {
-  
-}
 
-const RegisterForm: FC<RegisterFormProps> = ({}) => {
+const RegisterForm: FC = () => {
     function addInputs<Input>(type? : string,placeholder? : string,icon? : string,name?:string){
       return {type:type || "text",placeholder:placeholder || "",icon:icon || "",name:name || ""}
     }

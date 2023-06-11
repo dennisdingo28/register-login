@@ -7,12 +7,16 @@ export async function GET(req:Request,{params}:{params:{id:string}}){
     try{
         await connectDb();
         const id = params.id;
-        const user = await User.findById(id);
+        console.log("id",id);
+        
+        const user = await User.findById({_id:id});
+        console.log(user);
+        
         if(!user)
             throw new Error("User id was not provided");
         
-        NextResponse.json({user,ok:true});
+        return new NextResponse(JSON.stringify({user,ok:true}));
     }catch(err){
-        console.log(err);
+        console.log("err here",err);
     }
 }

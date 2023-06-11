@@ -10,6 +10,7 @@ import defaultUser from "../../assets/defaultProfile.png";
 import { useSession } from 'next-auth/react'
 import { FormState } from './types/form'
 import useAuthenticatedUser from '@/hooks/useAuthenticatedUser'
+import { Session } from 'next-auth'
 
 interface FormProps {
     title: string,
@@ -20,24 +21,10 @@ interface FormProps {
 }
 
 
-const Form: FC<FormProps> = async ({title,subtitle,inputs,buttonTitle,buttonClickHandler}) => {
+const Form: FC<FormProps> = ({title,subtitle,inputs,buttonTitle,buttonClickHandler}) => {
 
-  const [userData,setUserData] = useState();
-  console.log(userData);
-  
-  useEffect(()=>{
-    async function fetchUserData(){
-      try {
-        const session = await AuthenticatedUser();
-        if(session===null)
-          return;
-        setUserData(session);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    fetchUserData();
-  },[]);
+  const user = useAuthenticatedUser().then(res=>console.log("authuser",res));
+
   
   const [formState,setFormState] = useState<FormState>({});
   const [submitted,setSubmitted] = useState<boolean>(false);
