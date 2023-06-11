@@ -17,8 +17,10 @@ const RegisterForm: FC = () => {
         const res = await axios.post('/api/user/createUser',formStates);
         console.log(res);
         const data = res.data;
-        if(data.ok)
+        if(data.ok){
           localStorage.setItem('sessionToken',data.token);
+          window.location.reload();
+        }
         else {return;} //error handling
 
         

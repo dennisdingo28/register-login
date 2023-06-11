@@ -134,7 +134,7 @@ const Form: FC<FormProps> = ({title,subtitle,inputs,buttonTitle,buttonClickHandl
             </button>
         </div>
         <div className='userProfileContainer'>
-           {user && (
+           {user ? (
             <div>
               <div className='flex flex-col items-center'>
                 
@@ -149,7 +149,7 @@ const Form: FC<FormProps> = ({title,subtitle,inputs,buttonTitle,buttonClickHandl
               </div>
             </div>
             
-            )} 
+            ):"loading..."} 
         </div>
       </div>
      
