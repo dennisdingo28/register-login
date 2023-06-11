@@ -12,6 +12,8 @@ import { FormState } from './types/form'
 import { Session } from 'next-auth'
 import { User } from 'next-auth'
 import useAuthenticatedUser from '@/hooks/useAuthenticatedUser'
+import Loading from '../Loading'
+import SignOut from '@/lib/SignOut'
 
 interface FormProps {
     title: string,
@@ -24,12 +26,13 @@ interface FormProps {
 
 const Form: FC<FormProps> = ({title,subtitle,inputs,buttonTitle,buttonClickHandler}) => {
 
-  const user = useAuthenticatedUser();
+  const [authenticatedUserLoading,setAuthenticatedUserLoading] = useState<boolean>(false);
+
+  const user = useAuthenticatedUser({authenticatedUserLoading,setAuthenticatedUserLoading});
   console.log(user);
   
   const [formState,setFormState] = useState<FormState>({});
   const [submitted,setSubmitted] = useState<boolean>(false);
-  
   
   function isEmail(email:string) {
     return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
@@ -134,22 +137,25 @@ const Form: FC<FormProps> = ({title,subtitle,inputs,buttonTitle,buttonClickHandl
             </button>
         </div>
         <div className='userProfileContainer'>
-           {user ? (
-            <div>
+          {
+            authenticatedUserLoading ? <Loading message="Loading your data..."/>:user && (
+              <div>
               <div className='flex flex-col items-center'>
                 
                 <div className='flex items-center justify-center gap-1 mt-4'>
                   <Image src={`${user.image}`} width={22} height={22} className='rounded-full object-cover' alt='user profile'/>
                   <p className='font-medium'>{user.name}</p>
-                  <i onClick={()=>signOut()} className='bi bi-box-arrow-right w-[20px] h-[20px] cursor-pointer hover:text-red-700'></i>
+                  <i onClick={()=>SignOut(user)} className='bi bi-box-arrow-right w-[20px] h-[20px] cursor-pointer hover:text-red-700'></i>
                 </div>
                 <button className='bg-[#edbc3f] py-2 w-full mt-2 hover:bg-[#d4a429]' onClick={(e:MouseEvent<HTMLButtonElement>)=>{
                   e.preventDefault();
                 }}>Go To Dashboard</button>
               </div>
             </div>
-            
-            ):"loading..."} 
+            )
+          
+              
+          }
         </div>
       </div>
      

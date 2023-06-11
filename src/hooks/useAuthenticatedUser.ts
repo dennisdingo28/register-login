@@ -2,8 +2,14 @@ import { useSession } from "next-auth/react";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Dispatch,SetStateAction } from "react";
 
-export default function useAuthenticatedUser() {
+interface AuthHookProps {
+    authenticatedUserLoading: boolean,
+    setAuthenticatedUserLoading:Dispatch<SetStateAction<boolean>>
+}
+
+export default function useAuthenticatedUser({authenticatedUserLoading,setAuthenticatedUserLoading}:AuthHookProps) {
   const [authUser, setAuthUser] = useState<any>(null);
   const { data: session } = useSession();
   
@@ -12,9 +18,8 @@ export default function useAuthenticatedUser() {
       try {
         if (token) {
           const decryptedToken = decodeToken(token);
-          console.log("token", decryptedToken);
-
           if (decryptedToken) {
+            setAuthenticatedUserLoading(true);
             const res = await axios.get(
               `http://localhost:3000/api/user/getUser/${decryptedToken.id}`
             );
@@ -22,6 +27,7 @@ export default function useAuthenticatedUser() {
             if (data.ok) {
               setAuthUser(data.user);
             }
+            setAuthenticatedUserLoading(false);
           } else throw new Error("Token body is null");
         } else throw new Error("No token was provided");
       } catch (error) {
