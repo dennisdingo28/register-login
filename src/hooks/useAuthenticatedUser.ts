@@ -44,6 +44,10 @@ export default async function useAuthenticatedUser() {
         }
         if(appUser)
             getUser();
+        else{
+            if(session)
+                setAuthUser(session);
+        }
         
     },[appUser]);
     
