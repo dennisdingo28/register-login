@@ -5,12 +5,12 @@ import jwt from "jsonwebtoken";
 
 interface JWTUserPayload {
     id:string,
-    username?:string,
+    name?:string,
     email?:string,
 }
 
 interface UserProps {
-    username: string;
+    name: string;
     email: string;
     password: string;
     image: string;
@@ -24,9 +24,9 @@ interface UserDocument extends UserProps,Document {
 
 
 const UserSchema: Schema<UserDocument> = new Schema({
-    username: {
+    name: {
         type:String,
-        required:[true,'You must provide an username']
+        required:[true,'You must provide a name']
     },
     email:{
         type:String,
@@ -44,9 +44,9 @@ const UserSchema: Schema<UserDocument> = new Schema({
 });
 
 const GoogleUserSchema = new Schema({
-    username: {
+    name: {
         type:String,
-        required:[true,'You must provide an username']
+        required:[true,'You must provide a name']
     },
     email:{
         type:String,

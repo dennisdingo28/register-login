@@ -26,10 +26,10 @@ export const authOptions: NextAuthOptions = {
             try{
                 await connectDb();
                 
-                const existingGoogleUser = await GoogleUser.findOne({username:user.name,email:user.email});
+                const existingGoogleUser = await GoogleUser.findOne({name:user.name,email:user.email});
 
                 if(!existingGoogleUser){
-                    await GoogleUser.create({username:user.name,email:user.email,image:user.image});
+                    await GoogleUser.create({name:user.name,email:user.email,image:user.image});
                 }
                 return true;
             }catch(err){
@@ -47,11 +47,12 @@ export const authOptions: NextAuthOptions = {
         },
         async session({session,token}){
             
-            const sessionUser = await GoogleUser.findOne({email:session?.user?.email,username:session?.user?.name});
+            const sessionUser = await GoogleUser.findOne({email:session?.user?.email,name:session?.user?.name});
             if(session && session?.user){
                 
                 session.user._id=sessionUser._id.toString();
                 session.user.token=String(token.token);
+                session.user.isGoogleAccount=sessionUser.isGoogleAccount;
             }
             
             return session;
