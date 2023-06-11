@@ -17,8 +17,13 @@ const RegisterForm: FC<RegisterFormProps> = ({}) => {
 
     async function handleCreateAccount(formStates:FormState){
       try{
-        const res = await axios.post('/api/user',formStates);
+        const res = await axios.post('/api/user/createUser',formStates);
         console.log(res);
+        const data = res.data;
+        if(data.ok)
+          localStorage.setItem('sessionToken',data.token);
+        else {return;} //error handling
+
         
       }catch(err){
         console.log(err);

@@ -1,14 +1,13 @@
 import mongoose,{ Schema,Model,models,model,Document } from "mongoose";
 import defaultProfile from "../assets/defaultProfile.png";
 import bcrypt from 'bcrypt';
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
 
 interface JWTUserPayload {
     id:string,
     username?:string,
     email?:string,
 }
-
 
 interface UserProps {
     username: string;
@@ -63,7 +62,7 @@ const GoogleUserSchema = new Schema({
 })
 
 
-
+    
 UserSchema.methods.generateJWT = function(payload:JWTUserPayload): string | null{
     if(!process.env.JWT_ENCRYPTION || process.env.JWT_ENCRYPTION?.trim()==="")
         return null;

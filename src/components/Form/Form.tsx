@@ -1,7 +1,7 @@
 "use client"
 
 import { Input} from '@/types/form'
-import { Dispatch, FC, SetStateAction, useState } from 'react'
+import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react'
 import { MouseEvent } from 'react'
 import Image from 'next/image'
 import GoogleLogo from "../../assets/google.png"
@@ -9,6 +9,7 @@ import {signIn, signOut} from "next-auth/react"
 import defaultUser from "../../assets/defaultProfile.png";
 import { useSession } from 'next-auth/react'
 import { FormState } from './types/form'
+import useAuthenticatedUser from '@/hooks/useAuthenticatedUser'
 
 interface FormProps {
     title: string,
@@ -19,9 +20,24 @@ interface FormProps {
 }
 
 
-const Form: FC<FormProps> = ({title,subtitle,inputs,buttonTitle,buttonClickHandler}) => {
-  const {data:session} = useSession();
-  console.log(session);
+const Form: FC<FormProps> = async ({title,subtitle,inputs,buttonTitle,buttonClickHandler}) => {
+
+  const [userData,setUserData] = useState();
+  console.log(userData);
+  
+  useEffect(()=>{
+    async function fetchUserData(){
+      try {
+        const session = await AuthenticatedUser();
+        if(session===null)
+          return;
+        setUserData(session);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchUserData();
+  },[]);
   
   const [formState,setFormState] = useState<FormState>({});
   const [submitted,setSubmitted] = useState<boolean>(false);
@@ -130,7 +146,7 @@ const Form: FC<FormProps> = ({title,subtitle,inputs,buttonTitle,buttonClickHandl
             </button>
         </div>
         <div className='userProfileContainer'>
-          {session && (
+          {/* {session && (
             <div>
               <div className='flex flex-col items-center'>
                 
@@ -145,7 +161,7 @@ const Form: FC<FormProps> = ({title,subtitle,inputs,buttonTitle,buttonClickHandl
               </div>
             </div>
             
-            )}
+            )} */}
         </div>
       </div>
      
