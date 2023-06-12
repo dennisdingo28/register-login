@@ -20,7 +20,6 @@ interface FormProps {
     buttonClickHandler?:(formStates:FormState)=>void,
 }
 
-
 const Form: FC<FormProps> = ({title,subtitle,inputs,buttonTitle,buttonClickHandler}) => {
   const router = useRouter();
   const [authenticatedUserLoading,setAuthenticatedUserLoading] = useState<boolean | null>(false);

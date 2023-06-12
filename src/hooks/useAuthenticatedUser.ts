@@ -20,6 +20,8 @@ export default function useAuthenticatedUser({authenticatedUserLoading,setAuthen
   useEffect(() => {
     async function fetchUser(token: string) {
       try {
+        if(setAuthenticatedUserLoading)
+          setAuthenticatedUserLoading(true);
         if (token) {
           const decryptedToken = decodeToken(token);
           if (decryptedToken) {
@@ -27,44 +29,42 @@ export default function useAuthenticatedUser({authenticatedUserLoading,setAuthen
             const res = await axios.get(
               `http://localhost:3000/api/user/getUser/${decryptedToken.id}`
             );
+            if(setAuthenticatedUserLoading)
+              setAuthenticatedUserLoading(false);
             const data = res.data;
             if (data.ok) {
               setAuthUser(data.user);
             }
-            if(setAuthenticatedUserLoading)
-                setAuthenticatedUserLoading(false);
+         
           } else throw new Error("Token body is null");
         } else throw new Error("No token was provided");
       } catch (error) {
         if(setAuthenticatedUserLoading)
             setAuthenticatedUserLoading(false);
+
         console.log(error);
       }
     }
-    if(setAuthenticatedUserLoading)
-        setAuthenticatedUserLoading(true);
+ 
     if (typeof window !== "undefined") {
       const appUser = localStorage.getItem("sessionToken");
       if (appUser){
-        if(setAuthenticatedUserLoading)
-          setAuthenticatedUserLoading(true);
+      
         fetchUser(appUser);
-        if(setAuthenticatedUserLoading)
-            setAuthenticatedUserLoading(false);
+        
       } 
       else
         if(session){
-            if(setAuthenticatedUserLoading)
-                setAuthenticatedUserLoading(true);
-            setAuthUser(session.user);
-            if(session.user)
+          if(setAuthenticatedUserLoading)
+            setAuthenticatedUserLoading(true);
+          setAuthUser(session.user);
+          if(session.user)
               localStorage.setItem("googleSessionToken",session.user.token);
-            if(setAuthenticatedUserLoading)
-                setAuthenticatedUserLoading(false);
+          if(setAuthenticatedUserLoading)
+            setAuthenticatedUserLoading(false);
         }
     }
-    if(setAuthenticatedUserLoading)
-        setAuthenticatedUserLoading(false);
+    
   }, [session]);
 
   function decodeToken(token: string) {
