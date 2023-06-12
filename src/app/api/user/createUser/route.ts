@@ -13,6 +13,18 @@ export async function POST(req:Request){
         return new NextResponse(JSON.stringify({user,token:jwt,ok:true}));
 
     }catch(err){
+        if(err instanceof Error){
+            if(err.message.includes('duplicate key error'))
+            {
+                const keyValueMatch = err.message.match(/dup key: { (.*) }/);
+                if (keyValueMatch) {
+                    const keyValue = keyValueMatch[1];
+                    return new NextResponse(JSON.stringify({message:`Cannot create your account. ${keyValue} is already taken`,ok:false}))
+                // Handle the duplicate value error appropriately
+                }
+            }
+        }
+
         return new NextResponse(JSON.stringify({message:"Cannot create your account.Please try again later.",ok:false}))
     }
 }

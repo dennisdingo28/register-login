@@ -19,12 +19,13 @@ interface FormProps {
     errorMessage?: string,
     setErrorMessage?: Dispatch<SetStateAction<string>>
     buttonTitle?: string,
-    buttonClickHandler?:(formStates:FormState)=>void,
+    buttonClickHandler?: (formStates:FormState)=>void,
 }
 
 const Form: FC<FormProps> = ({title,subtitle,inputs,errorMessage,setErrorMessage,buttonTitle,buttonClickHandler}) => {
   const router = useRouter();
   const [authenticatedUserLoading,setAuthenticatedUserLoading] = useState<boolean | null>(false);
+  const [disabledButton,setDisabledButton] = useState<boolean>(false);
 
   const user = useAuthenticatedUser({authenticatedUserLoading,setAuthenticatedUserLoading});
   console.log(user);
@@ -38,6 +39,7 @@ const Form: FC<FormProps> = ({title,subtitle,inputs,errorMessage,setErrorMessage
   function clearInputs(){
     setFormState({});
     setSubmitted(false);
+    setDisabledButton(false);
     if(setErrorMessage)
       setErrorMessage("");
   }
@@ -90,6 +92,7 @@ const Form: FC<FormProps> = ({title,subtitle,inputs,errorMessage,setErrorMessage
   
   async function handleButtonClick(e:MouseEvent<HTMLButtonElement>){
     e.preventDefault();
+    setDisabledButton(true);
     if(validateInputs()){
       
       if(buttonTitle && buttonClickHandler){
@@ -100,7 +103,7 @@ const Form: FC<FormProps> = ({title,subtitle,inputs,errorMessage,setErrorMessage
     }
     setTimeout(()=>{
       clearInputs();
-    },2000)
+    },3400)
   }
 
   return (
@@ -124,7 +127,7 @@ const Form: FC<FormProps> = ({title,subtitle,inputs,errorMessage,setErrorMessage
           )
         })}
         {errorMessage && errorMessage.length!==0 && <p className='text-red-600 text-center text-[.8em]'>{errorMessage}</p>}
-        <button onClick={handleButtonClick} className='bg-[#68a5e4] duration-75 border border-[#68a5e4] text-white py-2 hover:bg-transparent hover:text-[#68a5e4] active:bg-[#68a5e4] active:text-white'>{buttonTitle}</button>
+        <button onClick={handleButtonClick} className={`bg-[#68a5e4] duration-75 border border-[#68a5e4] text-white py-2 hover:bg-transparent hover:text-[#68a5e4] active:bg-[#68a5e4] active:text-white ${disabledButton && "cursor-not-allowed bg-[#88aacb]"}`}>{buttonTitle}</button>
       </div>  
       <p className='text-center my-2'>or</p>
       <div className='formFooter'>

@@ -6,6 +6,8 @@ import axios from 'axios'
 import { FormState } from '@/types/form'
 
 const RegisterForm: FC = () => {
+  const [loginErrorMessage,setLoginErrorMessage] = useState<string>("");
+
     function addInputs<Input>(type? : string,placeholder? : string,icon? : string,name?:string){
       return {type:type || "text",placeholder:placeholder || "",icon:icon || "",name:name || ""}
     }
@@ -18,8 +20,9 @@ const RegisterForm: FC = () => {
         if(data.ok){
           localStorage.setItem('sessionToken',data.token);
           window.location.reload();
+        }else{
+          setLoginErrorMessage(data.message);
         }
-        else {return;} //error handling
 
         
       }catch(err){
@@ -35,7 +38,7 @@ const RegisterForm: FC = () => {
 
   return (
     <div className='h-full'>
-      <Form title='Create an account' subtitle='authenticate and fly' buttonTitle='Create My Account' buttonClickHandler={handleCreateAccount} inputs={inputs}/>
+      <Form title='Create an account' subtitle='authenticate and fly' buttonTitle='Create My Account' buttonClickHandler={handleCreateAccount} inputs={inputs} errorMessage={loginErrorMessage} setErrorMessage={setLoginErrorMessage}/>
     </div>
   )
 }

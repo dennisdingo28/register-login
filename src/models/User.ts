@@ -21,16 +21,16 @@ interface UserDocument extends UserProps,Document {
     generateJWT: (payload:JWTUserPayload) => string | null;
 }
  
-
-
 const UserSchema: Schema<UserDocument> = new Schema({
     name: {
         type:String,
-        required:[true,'You must provide a name']
+        required:[true,'You must provide a name'],
+        unique:true,
     },
     email:{
         type:String,
-        required:[true,"You must provide an email"]
+        required:[true,"You must provide an email"],
+        unique:true,
     },
     password:{
         type:String,
