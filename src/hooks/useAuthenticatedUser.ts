@@ -58,7 +58,7 @@ export default function useAuthenticatedUser({authenticatedUserLoading,setAuthen
                 setAuthenticatedUserLoading(true);
             setAuthUser(session.user);
             if(session.user)
-              localStorage.setItem("sessionToken",session.user.token);
+              localStorage.setItem("googleSessionToken",session.user.token);
             if(setAuthenticatedUserLoading)
                 setAuthenticatedUserLoading(false);
         }

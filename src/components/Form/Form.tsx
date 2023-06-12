@@ -1,16 +1,16 @@
 "use client"
 
 import { Input} from '@/types/form'
-import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react'
+import { FC, useState } from 'react'
 import { MouseEvent } from 'react'
 import Image from 'next/image'
 import GoogleLogo from "../../assets/google.png"
 import {signIn, signOut} from "next-auth/react"
-import { useSession } from 'next-auth/react'
 import { FormState } from '@/types/form'
 import useAuthenticatedUser from '@/hooks/useAuthenticatedUser'
 import Loading from '../Loading'
 import SignOut from '@/lib/SignOut'
+import { useRouter } from 'next/navigation'
 
 interface FormProps {
     title: string,
@@ -22,7 +22,7 @@ interface FormProps {
 
 
 const Form: FC<FormProps> = ({title,subtitle,inputs,buttonTitle,buttonClickHandler}) => {
-
+  const router = useRouter();
   const [authenticatedUserLoading,setAuthenticatedUserLoading] = useState<boolean | null>(false);
 
   const user = useAuthenticatedUser({authenticatedUserLoading,setAuthenticatedUserLoading});
@@ -146,6 +146,7 @@ const Form: FC<FormProps> = ({title,subtitle,inputs,buttonTitle,buttonClickHandl
                 </div>
                 <button className='bg-[#edbc3f] py-2 w-full mt-2 hover:bg-[#d4a429]' onClick={(e:MouseEvent<HTMLButtonElement>)=>{
                   e.preventDefault();
+                  router.push('/dashboard');
                 }}>Go To Dashboard</button>
               </div>
             </div>

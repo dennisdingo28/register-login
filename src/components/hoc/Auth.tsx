@@ -16,7 +16,7 @@ const Auth: FC<AuthProps> = ({children}) => {
 
 
         useEffect(()=>{
-            setAuthToken(localStorage.getItem('sessionToken') || null);
+            setAuthToken(localStorage.getItem('sessionToken') || localStorage.getItem('googleSessionToken') || null);
             setIsLoading(false);
         },[])
 

@@ -11,4 +11,6 @@ export default function SignOut(user:User | UserSession){
         }
     }
     localStorage.removeItem('sessionToken');
+    localStorage.removeItem('googleSessionToken');
+
 }
