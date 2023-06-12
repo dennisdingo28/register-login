@@ -46,6 +46,8 @@ export default function useAuthenticatedUser({authenticatedUserLoading,setAuthen
     if (typeof window !== "undefined") {
       const appUser = localStorage.getItem("sessionToken");
       if (appUser){
+        if(setAuthenticatedUserLoading)
+          setAuthenticatedUserLoading(true);
         fetchUser(appUser);
         if(setAuthenticatedUserLoading)
             setAuthenticatedUserLoading(false);
@@ -55,10 +57,14 @@ export default function useAuthenticatedUser({authenticatedUserLoading,setAuthen
             if(setAuthenticatedUserLoading)
                 setAuthenticatedUserLoading(true);
             setAuthUser(session.user);
+            if(session.user)
+              localStorage.setItem("sessionToken",session.user.token);
             if(setAuthenticatedUserLoading)
                 setAuthenticatedUserLoading(false);
         }
     }
+    if(setAuthenticatedUserLoading)
+        setAuthenticatedUserLoading(false);
   }, [session]);
 
   function decodeToken(token: string) {

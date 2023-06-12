@@ -7,8 +7,8 @@ export default function SignOut(user:User | UserSession){
         signOut();
     }else{
         if(typeof window !=='undefined'){
-            localStorage.removeItem('sessionToken');
             window.location.reload();
         }
     }
+    localStorage.removeItem('sessionToken');
 }

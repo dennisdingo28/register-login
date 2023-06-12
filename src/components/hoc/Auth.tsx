@@ -1,27 +1,41 @@
 "use client"
 
-import useAuthenticatedUser from '@/hooks/useAuthenticatedUser'
 import { FC, useEffect, useState } from 'react'
 import { ReactNode } from 'react'
 import Loading from '../Loading'
-
+import { useRouter } from 'next/navigation'
 interface AuthProps {
   children:ReactNode,
 }
 
 const Auth: FC<AuthProps> = ({children}) => {
-    const [authenticatedUserLoading,setAuthenticatedUserLoading] = useState<boolean | null>(false);
+        const router = useRouter();
+        const [authToken,setAuthToken] = useState<string | null>(null);
 
-    const user = useAuthenticatedUser({authenticatedUserLoading,setAuthenticatedUserLoading});
-   
+        const [isLoading,setIsLoading] = useState<boolean>(true);
 
-    return (
-        <div className="">
-            {authenticatedUserLoading ? <Loading message='Loading the dashboard...'/>:(user ? <div>
-                <h1>Protected page for authenticated users only</h1>
-            </div>:<p>you are not authenticated</p>)}
-        </div>
-    )
+
+        useEffect(()=>{
+            setAuthToken(localStorage.getItem('sessionToken') || null);
+            setIsLoading(false);
+        },[])
+
+        if(isLoading){
+            return <Loading message='loading the dashboard'/>
+        }else{
+            if(authToken){
+                return <div className="">{children}</div>
+            }else{
+                return (
+                    <div className="h-screen flex justify-center items-center gap-2">
+                        <h1 className='font-bold text-[2em]'>you are not authenticated</h1>
+                        <button onClick={()=>router.push('/')} className='bg-darkPurple p-2 rounded-md text-white font-medium'>back home</button>
+                    </div>
+                )
+            }
+        }
+    
+    
 }
 
 export default Auth

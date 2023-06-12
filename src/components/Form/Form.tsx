@@ -6,11 +6,8 @@ import { MouseEvent } from 'react'
 import Image from 'next/image'
 import GoogleLogo from "../../assets/google.png"
 import {signIn, signOut} from "next-auth/react"
-import defaultUser from "../../assets/defaultProfile.png";
 import { useSession } from 'next-auth/react'
 import { FormState } from '@/types/form'
-import { Session } from 'next-auth'
-import { User } from 'next-auth'
 import useAuthenticatedUser from '@/hooks/useAuthenticatedUser'
 import Loading from '../Loading'
 import SignOut from '@/lib/SignOut'
