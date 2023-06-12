@@ -69,6 +69,14 @@ UserSchema.methods.generateJWT = function(payload:JWTUserPayload): string | null
     const token = jwt.sign(payload,process.env.JWT_ENCRYPTION);
     return token;
 }
+UserSchema.methods.comparePassword = async function(password:string) {
+    try{
+        const match = await bcrypt.compare(password,this.password);
+        return match;
+    }catch(err){
+        console.log(err);
+    }
+}
 
 UserSchema.pre('save',async function(){
     try{

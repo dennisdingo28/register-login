@@ -1,7 +1,8 @@
 "use client"
 import { FC } from 'react'
 import Form from './Form'
-import { Input } from '@/types/form'
+import { FormState, Input } from '@/types/form'
+import axios from 'axios'
 
 interface LoginFormProps {
   
@@ -13,8 +14,21 @@ const LoginForm: FC<LoginFormProps> = ({}) => {
         return {type:type || "text",placeholder:placeholder || "",icon:icon || "",name:name || ""}
       }
   
-      function handleLoginAccount(){
-        console.log('test login');
+      async function handleLoginAccount(formStates:FormState){
+        try{
+          console.log(formStates);
+          
+          const res = await axios.post(`/api/user/find`,{formStates});
+          console.log(res);
+          if(res.data.ok){
+            localStorage.setItem('sessionToken',res.data.token);
+            window.location.reload();
+          }
+          
+        }catch(err){
+          console.log(err);
+          
+        }
       
       }
       

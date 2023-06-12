@@ -8,6 +8,7 @@ export async function POST(req:Request){
         const {username,email,password} = await req.json();
         
         const user = await User.create({name:username.value,email:email.value,password:password.value});
+        delete user.password;
         const jwt = user.generateJWT({id:user._id,name:username.value,email:email.value});
 
         return new NextResponse(JSON.stringify({user,token:jwt,ok:true}));
