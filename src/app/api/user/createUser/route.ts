@@ -8,12 +8,11 @@ export async function POST(req:Request){
         const {username,email,password} = await req.json();
         
         const user = await User.create({name:username.value,email:email.value,password:password.value});
-        delete user.password;
         const jwt = user.generateJWT({id:user._id,name:username.value,email:email.value});
 
         return new NextResponse(JSON.stringify({user,token:jwt,ok:true}));
 
     }catch(err){
-        console.log(err);
+        return new NextResponse(JSON.stringify({message:"Cannot create your account.Please try again later.",ok:false}))
     }
 }

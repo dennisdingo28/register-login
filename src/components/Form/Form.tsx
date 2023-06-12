@@ -1,7 +1,7 @@
 "use client"
 
 import { Input} from '@/types/form'
-import { FC, useState } from 'react'
+import { Dispatch, FC, SetStateAction, useState } from 'react'
 import { MouseEvent } from 'react'
 import Image from 'next/image'
 import GoogleLogo from "../../assets/google.png"
@@ -16,11 +16,13 @@ interface FormProps {
     title: string,
     subtitle?: string,
     inputs: Input[],
+    errorMessage?: string,
+    setErrorMessage?: Dispatch<SetStateAction<string>>
     buttonTitle?: string,
     buttonClickHandler?:(formStates:FormState)=>void,
 }
 
-const Form: FC<FormProps> = ({title,subtitle,inputs,buttonTitle,buttonClickHandler}) => {
+const Form: FC<FormProps> = ({title,subtitle,inputs,errorMessage,setErrorMessage,buttonTitle,buttonClickHandler}) => {
   const router = useRouter();
   const [authenticatedUserLoading,setAuthenticatedUserLoading] = useState<boolean | null>(false);
 
@@ -36,6 +38,8 @@ const Form: FC<FormProps> = ({title,subtitle,inputs,buttonTitle,buttonClickHandl
   function clearInputs(){
     setFormState({});
     setSubmitted(false);
+    if(setErrorMessage)
+      setErrorMessage("");
   }
   function validateInputs():boolean {
     const formStateKeys = Object.keys(formState);
@@ -119,6 +123,7 @@ const Form: FC<FormProps> = ({title,subtitle,inputs,buttonTitle,buttonClickHandl
             </div>
           )
         })}
+        {errorMessage && errorMessage.length!==0 && <p className='text-red-600 text-center text-[.8em]'>{errorMessage}</p>}
         <button onClick={handleButtonClick} className='bg-[#68a5e4] duration-75 border border-[#68a5e4] text-white py-2 hover:bg-transparent hover:text-[#68a5e4] active:bg-[#68a5e4] active:text-white'>{buttonTitle}</button>
       </div>  
       <p className='text-center my-2'>or</p>

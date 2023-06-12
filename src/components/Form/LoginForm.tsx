@@ -1,5 +1,5 @@
 "use client"
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import Form from './Form'
 import { FormState, Input } from '@/types/form'
 import axios from 'axios'
@@ -9,7 +9,7 @@ interface LoginFormProps {
 }
 
 const LoginForm: FC<LoginFormProps> = ({}) => {
-
+    const [loginErrorMessage,setLoginErrorMessage] = useState<string>("");
     function addInputs<Input>(type? : string,placeholder? : string,icon? : string,name?:string){
         return {type:type || "text",placeholder:placeholder || "",icon:icon || "",name:name || ""}
       }
@@ -23,6 +23,8 @@ const LoginForm: FC<LoginFormProps> = ({}) => {
           if(res.data.ok){
             localStorage.setItem('sessionToken',res.data.token);
             window.location.reload();
+          }else{
+            setLoginErrorMessage(res.data.message);
           }
           
         }catch(err){
@@ -37,7 +39,7 @@ const LoginForm: FC<LoginFormProps> = ({}) => {
       inputs.push(addInputs("password","password","bi bi-shield-lock-fill","password"));
 
   return <div className='h-full'>
-    <Form title='Sign In' buttonTitle='Sign In Now' buttonClickHandler={handleLoginAccount} inputs={inputs}/>
+    <Form title='Sign In' buttonTitle='Sign In Now' buttonClickHandler={handleLoginAccount} inputs={inputs} errorMessage={loginErrorMessage} setErrorMessage={setLoginErrorMessage}/>
   </div>
 }
 

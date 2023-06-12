@@ -26,11 +26,7 @@ export async function POST(req:Request){
         
 
     }catch(err){
-        console.log(err);
-        
+        return new NextResponse(JSON.stringify({message:(err as Error).message,ok:false}));
     }
-   
     
-    return new NextResponse(JSON.stringify({ req }))
-       
 }
