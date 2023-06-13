@@ -11,6 +11,7 @@ import useAuthenticatedUser from '@/hooks/useAuthenticatedUser'
 import Loading from '../Loading'
 import SignOut from '@/lib/SignOut'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 interface FormProps {
     title: string,
@@ -23,7 +24,6 @@ interface FormProps {
 }
 
 const Form: FC<FormProps> = ({title,subtitle,inputs,errorMessage,setErrorMessage,buttonTitle,buttonClickHandler}) => {
-  const router = useRouter();
   const [authenticatedUserLoading,setAuthenticatedUserLoading] = useState<boolean | null>(false);
   const [disabledButton,setDisabledButton] = useState<boolean>(false);
 
@@ -151,10 +151,10 @@ const Form: FC<FormProps> = ({title,subtitle,inputs,errorMessage,setErrorMessage
                   <p className='font-medium'>{user.name}</p>
                   <i onClick={()=>SignOut(user)} className='bi bi-box-arrow-right w-[20px] h-[20px] cursor-pointer hover:text-red-700'></i>
                 </div>
-                <button className='bg-[#edbc3f] py-2 w-full mt-2 hover:bg-[#d4a429]' onClick={(e:MouseEvent<HTMLButtonElement>)=>{
-                  e.preventDefault();
-                  router.push('/dashboard');
-                }}>Go To Dashboard</button>
+                <Link href={"/dashboard"} className='bg-[#edbc3f] py-2 w-full mt-2 hover:bg-[#d4a429] text-center'>
+                  Go to dashboard
+                </Link>
+                
               </div>
             </div>
             )

@@ -28,6 +28,8 @@ const LoginForm: FC<LoginFormProps> = ({}) => {
           }
           
         }catch(err){
+          setLoginErrorMessage("Something went wrong while trying fetch your account.Please try again later!");
+
           console.log(err);
           
         }

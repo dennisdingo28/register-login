@@ -9,7 +9,6 @@ export async function POST(req:Request){
         const password = data.formStates.password.value;
         
         const user = await User.findOne({email:email});
-        console.log(user);
         
         if(!user)
             throw new Error("Cannot find any users");
