@@ -15,7 +15,6 @@ const RegisterForm: FC = () => {
     async function handleCreateAccount(formStates:FormState){
       try{
         const res = await axios.post('/api/user/createUser',formStates);
-        console.log(res);
         const data = res.data;
         if(data.ok){
           localStorage.setItem('sessionToken',data.token);

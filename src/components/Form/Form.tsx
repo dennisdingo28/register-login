@@ -28,7 +28,6 @@ const Form: FC<FormProps> = ({title,subtitle,inputs,errorMessage,setErrorMessage
   const [disabledButton,setDisabledButton] = useState<boolean>(false);
 
   const user = useAuthenticatedUser({authenticatedUserLoading,setAuthenticatedUserLoading});
-  console.log(user);
   
   const [formState,setFormState] = useState<FormState>({});
   const [submitted,setSubmitted] = useState<boolean>(false);

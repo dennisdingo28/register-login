@@ -4,11 +4,8 @@ import Form from './Form'
 import { FormState, Input } from '@/types/form'
 import axios from 'axios'
 
-interface LoginFormProps {
-  
-}
 
-const LoginForm: FC<LoginFormProps> = ({}) => {
+const LoginForm: FC = () => {
     const [loginErrorMessage,setLoginErrorMessage] = useState<string>("");
     function addInputs<Input>(type? : string,placeholder? : string,icon? : string,name?:string){
         return {type:type || "text",placeholder:placeholder || "",icon:icon || "",name:name || ""}
@@ -19,7 +16,6 @@ const LoginForm: FC<LoginFormProps> = ({}) => {
           console.log(formStates);
           
           const res = await axios.post(`/api/user/find`,{formStates});
-          console.log(res);
           if(res.data.ok){
             localStorage.setItem('sessionToken',res.data.token);
             window.location.reload();
