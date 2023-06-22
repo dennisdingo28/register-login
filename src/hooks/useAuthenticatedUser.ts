@@ -27,7 +27,7 @@ export default function useAuthenticatedUser({authenticatedUserLoading,setAuthen
           if (decryptedToken) {
             
             const res = await axios.get(
-              `http://localhost:3000/api/user/getUser/${decryptedToken.id}`
+              `https://register-login-plum.vercel.app/api/user/getUser/${decryptedToken.id}`
             );
             if(setAuthenticatedUserLoading)
               setAuthenticatedUserLoading(false);
